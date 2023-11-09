@@ -1,0 +1,5 @@
+# requirements.txt
+
+Flask==3.0.0
+selenium==4.14.0
+gunicorn==21.2.0

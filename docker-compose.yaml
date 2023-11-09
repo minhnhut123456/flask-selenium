@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  chrome-driver:
+    image: seleniarm/standalone-chromium
+    container_name: chrome-driver
+    healthcheck:
+      test: "wget --quiet --tries=1 --spider http://localhost:4444 || exit 1z"
+      interval: 30s
+      timeout: 20s
+      retries: 10
+    ports:
+      - 4444:4444
+    volumes:
+      - /dev/shm:/dev/shm
+
+  app:
+    build: .
+    container_name: app
+    ports:
+      - "8080:8080"
+    environment:
+      PORT: 8080
+    depends_on:
+      chrome-driver:
+        condition: service_healthy
+    restart: unless-stopped
